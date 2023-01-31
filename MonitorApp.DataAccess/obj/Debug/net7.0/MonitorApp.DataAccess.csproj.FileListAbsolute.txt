@@ -1,0 +1,15 @@
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.csproj.AssemblyReference.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.AssemblyInfoInputs.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.AssemblyInfo.cs
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.csproj.CoreCompileInputs.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\bin\Debug\net7.0\MonitorApp.DataAccess.deps.json
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\bin\Debug\net7.0\MonitorApp.DataAccess.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\bin\Debug\net7.0\MonitorApp.DataAccess.pdb
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\bin\Debug\net7.0\MonitorApp.Domain.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\bin\Debug\net7.0\MonitorApp.Domain.pdb
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.csproj.CopyComplete
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\refint\MonitorApp.DataAccess.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\MonitorApp.DataAccess.pdb
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.DataAccess\obj\Debug\net7.0\ref\MonitorApp.DataAccess.dll

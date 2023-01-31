@@ -1,0 +1,12 @@
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\bin\Debug\net7.0\MonitorApp.Domain.deps.json
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\bin\Debug\net7.0\MonitorApp.Domain.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\bin\Debug\net7.0\MonitorApp.Domain.pdb
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.csproj.AssemblyReference.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.AssemblyInfoInputs.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.AssemblyInfo.cs
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.csproj.CoreCompileInputs.cache
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\refint\MonitorApp.Domain.dll
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\MonitorApp.Domain.pdb
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp.Domain\obj\Debug\net7.0\ref\MonitorApp.Domain.dll

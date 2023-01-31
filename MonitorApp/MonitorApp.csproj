@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MonitorApp.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MonitorApp.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.8.0-ci148" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MonitorApp.DataAccess\MonitorApp.DataAccess.csproj" />
+	  <ProjectReference Include="..\MonitorApp.Domain\MonitorApp.Domain.csproj" />
+	</ItemGroup>
+</Project>
