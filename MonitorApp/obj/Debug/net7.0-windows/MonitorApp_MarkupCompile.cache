@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\App.xaml
-2374176989
+397104898
 1-87617120
-7291002145
+8-923950346
 212-9305725
-DefaultAppStyles.xaml;Views\ShellWindow.xaml;
+DefaultAppStyles.xaml;Views\AppSettingsView.xaml;Views\ShellWindow.xaml;
 
 False
 

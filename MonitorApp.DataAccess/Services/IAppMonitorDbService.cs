@@ -8,15 +8,15 @@ public interface IAppMonitorDbService
     /// Save app in database
     /// </summary>
     /// <param name="app">AppToMonitor</param>
-    /// <returns>True if saved successfully else false</returns>
-    bool Save(AppToMonitor app);
+    /// <returns>Saved Id if saved successfully else 0</returns>
+    int Save(AppToMonitor app);
 
     /// <summary>
     /// Removes an app from monitoring table
     /// </summary>
-    /// <param name="app">AppToMonitor</param>
+    /// <param name="id">Id of AppToMonitor object</param>
     /// <returns>True if successfully deleted else false</returns>
-    bool Remove(AppToMonitor app);
+    bool Remove(int id);
 
     /// <summary>
     /// Gets an app by ID

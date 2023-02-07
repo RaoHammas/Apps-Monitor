@@ -22,39 +22,30 @@ public class AppMonitorDbService : IAppMonitorDbService
     }
 
     ///<inheritdoc />
-    public bool Save(AppToMonitor app)
+    public int Save(AppToMonitor app)
     {
         using IDbConnection con = new SqliteConnection(_connectionString);
 
-        string query =
-            @"Insert into AppsToMonitor (PID, SessionId, AppName, ProcessName, Status, StartedAt, StoppedAt)  
-                values (@PID, @SessionId, @AppName, @ProcessName, @Status, @StartedAt, @StoppedAt)";
-        if (app.Id > 0)
-        {
-            query =
-                @"UPDATE AppsToMonitor SET PID = @PID, SessionId = @SessionId, AppName = @AppName, ProcessName = @ProcessName, Status = @Status
-                  StartedAt = @StartedAt, StoppedAt = @StoppedAt 
-                  WHERE Id = @Id;";
-        }
+        const string query = @"REPLACE INTO AppsToMonitor (PID, SessionId, AppName, ProcessName, Status, StartedAt, StoppedAt)  
+            VALUES 
+            (@PID, @SessionId, @AppName, @ProcessName, @Status, @StartedAt, @StoppedAt); 
+            
+            SELECT last_insert_rowid();";
 
-        var rowsAffected = con.Execute(query, app);
 
-        if (rowsAffected > 0)
-        {
-            return true;
-        }
+        var insertedId = con.QuerySingle<int>(query, app);
 
-        return false;
+        return insertedId;
     }
 
     ///<inheritdoc />
-    public bool Remove(AppToMonitor app)
+    public bool Remove(int id)
     {
         using IDbConnection con = new SqliteConnection(_connectionString);
         string query = @"DELETE FROM AppsToMonitor WHERE Id = @Id;";
         var rowsAffected = con.Execute(query, new
         {
-            app.Id
+            Id = id
         });
 
         if (rowsAffected > 0)

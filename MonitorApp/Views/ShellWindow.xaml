@@ -7,6 +7,7 @@
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:models="clr-namespace:MonitorApp.Domain.Models;assembly=MonitorApp.Domain"
     xmlns:viewModels1="clr-namespace:MonitorApp.ViewModels"
+    xmlns:views="clr-namespace:MonitorApp.Views"
     Title="Applications Monitor"
     Width="1280"
     Height="720"
@@ -21,27 +22,40 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources />
-    <Grid Margin="30">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+    <Grid>
+        <md:DialogHost
+            VerticalAlignment="Stretch"
+            CloseOnClickAway="True"
+            DialogTheme="Inherit"
+            IsOpen="{Binding IsSettingsDialogOpened}"
+            OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
+            Placement="Center">
+            <md:DialogHost.DialogContent>
+                <views:AppSettingsView />
+            </md:DialogHost.DialogContent>
+            <Grid Margin="30">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-            <StackPanel
-                Grid.Row="1"
-                HorizontalAlignment="Left"
-                Orientation="Horizontal">
-                <ComboBox
-                    x:Name="ComboBoxAllApps"
-                    Width="500"
-                    HorizontalAlignment="Left"
-                    md:HintAssist.Hint="Running Processes/Apps"
-                    FontSize="14"
-                    ItemsSource="{Binding AllRunningAppsShown, Mode=OneWay}">
-                    <ComboBox.ItemTemplate>
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
+                        <ComboBox
+                            x:Name="ComboBoxAllApps"
+                            Width="500"
+                            HorizontalAlignment="Left"
+                            md:HintAssist.Hint="Running Processes/Apps"
+                            DisplayMemberPath="ProcessName"
+                            FontSize="14"
+                            IsEditable="True"
+                            ItemsSource="{Binding AllRunningAppsShown, Mode=OneWay}">
+                            <!--<ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:AppToMonitor}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding ProcessName}" />
@@ -52,189 +66,209 @@
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <Button
-                    Margin="10,0,0,0"
-                    Padding="10,5,10,5"
-                    VerticalAlignment="Stretch"
-                    Command="{Binding MonitorAppCommand}"
-                    CommandParameter="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem}"
-                    FontWeight="Bold"
-                    ToolTip="Add selected app to monitoring list">
-                    <md:PackIcon Kind="Add" />
-                </Button>
+                    </ComboBox.ItemTemplate>-->
+                        </ComboBox>
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="10,5,10,5"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding MonitorAppCommand}"
+                            CommandParameter="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem}"
+                            FontWeight="Bold"
+                            ToolTip="Add selected app to monitoring list">
+                            <md:PackIcon Kind="Add" />
+                        </Button>
 
-                <Button
-                    Margin="10,0,0,0"
-                    Padding="10,5,10,5"
-                    VerticalAlignment="Stretch"
-                    md:ButtonProgressAssist.IsIndeterminate="True"
-                    md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
-                    Command="{Binding LoadAllRunningAppsCommand}"
-                    FontWeight="Bold"
-                    ToolTip="Refresh running applications list">
-                    <md:PackIcon Kind="Refresh" />
-                </Button>
-            </StackPanel>
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="10,5,10,5"
+                            VerticalAlignment="Stretch"
+                            md:ButtonProgressAssist.IsIndeterminate="True"
+                            md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
+                            Command="{Binding LoadAllRunningAppsCommand}"
+                            FontWeight="Bold"
+                            ToolTip="Refresh running applications list">
+                            <md:PackIcon Kind="Refresh" />
+                        </Button>
+                    </StackPanel>
 
-            <StackPanel
-                Grid.Row="1"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal"
-                ToolTip="If checked, It will only show the apps that has a window">
-                <TextBlock
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Text="Show Apps Only" />
-                <ToggleButton
-                    Width="50"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Command="{Binding ApplyFilterCommand}"
-                    Cursor="Hand"
-                    IsChecked="{Binding ShowAppsOnly}"
-                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                    ToolTip="If checked, It will show only the applications with GUI" />
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        ToolTip="If checked, It will only show the apps that has a window">
+                        <TextBlock
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="Show Apps With Windows Only" />
+                        <ToggleButton
+                            Width="50"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding ApplyFilterCommand}"
+                            Cursor="Hand"
+                            IsChecked="{Binding ShowAppsOnly}"
+                            Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                            ToolTip="If checked, It will show only the applications with GUI" />
 
-                <TextBlock
-                    Margin="10,0,5,0"
-                    VerticalAlignment="Center"
-                    Text="For Current User Only" />
-                <ToggleButton
-                    Width="50"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Command="{Binding ApplyFilterCommand}"
-                    Cursor="Hand"
-                    IsChecked="{Binding ShowForCurrentUserOnly}"
-                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
-                    ToolTip="Show only the apps owned by the current user" />
+                        <TextBlock
+                            Margin="10,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="For Current User Only" />
+                        <ToggleButton
+                            Width="50"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding ApplyFilterCommand}"
+                            Cursor="Hand"
+                            IsChecked="{Binding ShowForCurrentUserOnly}"
+                            Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                            ToolTip="Show only the apps owned by the current user" />
 
-            </StackPanel>
+                    </StackPanel>
 
-            <StackPanel
-                Grid.Row="2"
-                Margin="0,10,0,10"
-                Orientation="Horizontal">
-                <md:Chip>
-                    <md:Chip.Content>
-                        <TextBlock VerticalAlignment="Center">
-                            <Run Text="TOTAL RUNNING APPS | " />
-                            <Run Text="{Binding AllRunningAppsShown.Count, Mode=OneWay}" />
-                        </TextBlock>
-                    </md:Chip.Content>
-                </md:Chip>
-                <md:Chip>
-                    <md:Chip.Content>
-                        <TextBlock VerticalAlignment="Center">
-                            <Run Text="TOTAL MONITORING | " />
-                            <Run Text="{Binding MonitoringApps.Count, Mode=OneWay}" />
-                        </TextBlock>
-                    </md:Chip.Content>
-                </md:Chip>
-            </StackPanel>
+                    <StackPanel
+                        Grid.Row="2"
+                        Margin="0,10,0,10"
+                        Orientation="Horizontal">
+                        <md:Chip>
+                            <md:Chip.Content>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="TOTAL RUNNING APPS | " />
+                                    <Run Text="{Binding AllRunningAppsShown.Count, Mode=OneWay}" />
+                                </TextBlock>
+                            </md:Chip.Content>
+                        </md:Chip>
+                        <md:Chip>
+                            <md:Chip.Content>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="TOTAL MONITORING | " />
+                                    <Run Text="{Binding MonitoringApps.Count, Mode=OneWay}" />
+                                </TextBlock>
+                            </md:Chip.Content>
+                        </md:Chip>
+                    </StackPanel>
 
-            <DataGrid
-                Grid.Row="3"
-                md:DataGridAssist.ColumnHeaderPadding="10 10 10 10"
-                AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
-                HeadersVisibility="All"
-                HorizontalGridLinesBrush="LightGray"
-                IsReadOnly="True"
-                ItemsSource="{Binding MonitoringApps}"
-                LoadingRow="DataGrid_OnLoadingRow"
-                SelectionMode="Single"
-                SelectionUnit="FullRow"
-                VerticalGridLinesBrush="LightGray">
+                    <DataGrid
+                        Grid.Row="3"
+                        md:DataGridAssist.ColumnHeaderPadding="10 10 10 10"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        HeadersVisibility="All"
+                        HorizontalGridLinesBrush="LightGray"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding MonitoringApps}"
+                        LoadingRow="DataGrid_OnLoadingRow"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        VerticalGridLinesBrush="LightGray">
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="120"
-                        Binding="{Binding PID}"
-                        ElementStyle="{StaticResource DgCenterCellContent}"
-                        Header="PID" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding ProcessName}"
-                        ElementStyle="{StaticResource DgCenterCellContent}"
-                        Header="Process Name" />
-                    <DataGridTextColumn
-                        Width="3*"
-                        Binding="{Binding AppName}"
-                        ElementStyle="{StaticResource DgCenterCellContent}"
-                        Header="App/Window Title" />
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="120"
+                                Binding="{Binding PID}"
+                                ElementStyle="{StaticResource DgCenterCellContent}"
+                                Header="PID" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding ProcessName}"
+                                ElementStyle="{StaticResource DgCenterCellContent}"
+                                Header="Process Name" />
+                            <DataGridTextColumn
+                                Width="3*"
+                                Binding="{Binding AppName}"
+                                ElementStyle="{StaticResource DgCenterCellContent}"
+                                Header="App/Window Title" />
 
-                    <DataGridTemplateColumn
-                        Width="100"
-                        Header="Status"
-                        HeaderStyle="{StaticResource DgHeaderCenter}"
-                        SortDirection="Ascending"
-                        SortMemberPath="Status">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="10,5,10,5"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    CornerRadius="12">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Status}" />
+                            <DataGridTemplateColumn
+                                Width="150"
+                                Header="Status"
+                                HeaderStyle="{StaticResource DgHeaderCenter}"
+                                SortDirection="Ascending"
+                                SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Padding="10,5,10,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            CornerRadius="12">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Status}" />
 
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Background" Value="{DynamicResource BrushSolidSuccessBackground}" />
-                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidSuccessForeground}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}" Value="Closed">
-                                                    <Setter Property="Background" Value="{DynamicResource BrushSolidDangerBackground}" />
-                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidDangerForeground}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="Idle">
-                                                    <Setter Property="Background" Value="{DynamicResource BrushSolidWarningBackground}" />
-                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidWarningForeground}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                </Border>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn
-                        Width="100"
-                        Header="Action"
-                        HeaderStyle="{StaticResource DgHeaderCenter}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.StopMonitoringAppCommand}"
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                    ToolTip="Stop monitoring this app">
-                                    <md:PackIcon
-                                        Width="24"
-                                        Height="24"
-                                        Kind="DeleteForever" />
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-        <md:Snackbar
-            HorizontalAlignment="Right"
-            ActionButtonPlacement="Auto"
-            MessageQueue="{Binding SnackbarMessageQueue, Mode=OneWay}" >
-            <md:SnackbarMessage ActionContent="X" Content="{Binding}" />
-        </md:Snackbar>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="{DynamicResource BrushSolidSuccessBackground}" />
+                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidSuccessForeground}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Stopped">
+                                                            <Setter Property="Background" Value="{DynamicResource BrushSolidDangerBackground}" />
+                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidDangerForeground}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                Width="100"
+                                Header="Setting"
+                                HeaderStyle="{StaticResource DgHeaderCenter}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.OpenAppSettingsCommand}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            ToolTip="Configure Monitoring Settings">
+                                            <md:PackIcon
+                                                Width="24"
+                                                Height="24"
+                                                Kind="Settings" />
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn
+                                Width="100"
+                                Header="Action"
+                                HeaderStyle="{StaticResource DgHeaderCenter}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.StopMonitoringAppCommand}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            ToolTip="Stop monitoring this app">
+                                            <md:PackIcon
+                                                Width="24"
+                                                Height="24"
+                                                Kind="DeleteForever" />
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <md:Snackbar
+                    HorizontalAlignment="Right"
+                    ActionButtonPlacement="Auto"
+                    MessageQueue="{Binding SnackbarMessageQueue, Mode=OneWay}">
+                    <md:SnackbarMessage ActionContent="X" Content="{Binding}" />
+                </md:Snackbar>
+            </Grid>
+        </md:DialogHost>
     </Grid>
 </Window>

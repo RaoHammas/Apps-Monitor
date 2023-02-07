@@ -3,6 +3,6 @@
 public enum AppStatus
 {
     Running,
-    Closed,
-    Idle,
+    Monitoring,
+    Stopped,
 }

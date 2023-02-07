@@ -62,3 +62,6 @@ E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\bin\Debug\net7.0-windows\Moni
 E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\bin\Debug\net7.0-windows\MonitorApp.dll.config
 E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\bin\Debug\net7.0-windows\MonitorApp.db
 E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\obj\Debug\net7.0-windows\MonitorApp_Content.g.cs
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\obj\Debug\net7.0-windows\Views\AppSettingsView.g.cs
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\obj\Debug\net7.0-windows\GeneratedInternalTypeHelper.g.cs
+E:\PERSONAL PROJECTS\MonitorAppSolution\MonitorApp\obj\Debug\net7.0-windows\Views\AppSettingsView.baml

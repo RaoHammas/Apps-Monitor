@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Timers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
@@ -22,6 +25,7 @@ public partial class ShellViewModel : ObservableObject, IShell
     [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private bool _showAppsOnly;
     [ObservableProperty] private bool _showForCurrentUserOnly;
+    [ObservableProperty] private bool _isSettingsDialogOpened;
 
     /// <summary>
     /// Constructor
@@ -32,12 +36,43 @@ public partial class ShellViewModel : ObservableObject, IShell
         _processHelper = processHelper;
         _dbService = dbService;
         _snackbarMessageQueue = snackbarMessageQueue;
-        _currentSessionId = processHelper.GetCurrentProcessId();
+        _currentSessionId = processHelper.GetCurrentProcessSessionId();
         IsLoading = false;
         ShowAppsOnly = false;
+        IsSettingsDialogOpened = false;
 
-        LoadAllRunningAppsCommand.Execute(null);
+        LoadAllRunningApps();
         LoadAllMonitoringApps();
+
+        var monitorTimer = new Timer(5000);
+        monitorTimer.Elapsed += MonitorTimerOnElapsed;
+        //monitorTimer.Start();
+    }
+
+    private async void MonitorTimerOnElapsed(object? sender, ElapsedEventArgs e)
+    {
+        await Task.Run(CheckIfMonitoringAppStillRunning);
+    }
+
+    private Task CheckIfMonitoringAppStillRunning()
+    {
+        foreach (var app in MonitoringApps)
+        {
+            var found = _processHelper.Get(app);
+            if (found != null)
+            {
+                if (found.PID != app.PID)
+                {
+                    app.PID = found.PID; //means app is running but PID changed
+                }
+            }
+            else
+            {
+                SnackbarMessageQueue.Enqueue($"{app.ProcessName} Has stopped running!");
+            }
+        }
+
+        return Task.CompletedTask;
     }
 
     private void LoadAllMonitoringApps()
@@ -58,16 +93,14 @@ public partial class ShellViewModel : ObservableObject, IShell
     private void LoadAllRunningApps()
     {
         IsLoading = true;
-        ShowAppsOnly = false;
-        ShowForCurrentUserOnly = false;
         AllRunningApps = new ObservableCollection<AppToMonitor>();
 
-        foreach (var app in _processHelper.GetAllRunningApplications())
+        foreach (var app in _processHelper.GetAllRunning())
         {
             AllRunningApps.Add(app);
         }
 
-        AllRunningAppsShown = AllRunningApps;
+        ApplyFilter();
 
         IsLoading = false;
         SnackbarMessageQueue.Enqueue("System apps loading completed!");
@@ -78,15 +111,25 @@ public partial class ShellViewModel : ObservableObject, IShell
     {
         if (app is not null)
         {
-            if (MonitoringApps.Contains(app))
+            if (MonitoringApps.FirstOrDefault(x => x.ProcessName == app.ProcessName) != null)
             {
+                SnackbarMessageQueue.Enqueue("This app is already being monitored!");
                 return;
             }
 
-            if (_dbService.Save(app))
+            app.StartedAt = DateTime.Now;
+            app.Status = AppStatus.Monitoring;
+
+            var savedId = _dbService.Save(app);
+            if (savedId > 0)
             {
+                app.Id = savedId;
                 MonitoringApps.Add(app);
                 SnackbarMessageQueue.Enqueue("App is successfully added to the Monitoring list.");
+            }
+            else
+            {
+                SnackbarMessageQueue.Enqueue("FAILED: Something happened at server side. Please try again...");
             }
         }
     }
@@ -96,10 +139,14 @@ public partial class ShellViewModel : ObservableObject, IShell
     {
         if (app is not null)
         {
-            if (_dbService.Remove(app))
+            if (_dbService.Remove(app.Id))
             {
                 MonitoringApps.Remove(app);
                 SnackbarMessageQueue.Enqueue("App is successfully removed from the Monitoring list.");
+            }
+            else
+            {
+                SnackbarMessageQueue.Enqueue("FAILED: Something happened at server side. Please try again...");
             }
         }
     }
@@ -119,5 +166,11 @@ public partial class ShellViewModel : ObservableObject, IShell
         }
 
         AllRunningAppsShown = new ObservableCollection<AppToMonitor>(query);
+    }
+
+    [RelayCommand]
+    public void OpenAppSettings()
+    {
+        IsSettingsDialogOpened = true;
     }
 }
