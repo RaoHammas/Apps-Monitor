@@ -217,7 +217,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn
                                 Width="100"
-                                Header="Setting"
+                                Header="Settings"
                                 HeaderStyle="{StaticResource DgHeaderCenter}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

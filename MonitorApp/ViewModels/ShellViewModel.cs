@@ -49,11 +49,20 @@ public partial class ShellViewModel : ObservableObject, IShell
         //monitorTimer.Start();
     }
 
+    /// <summary>
+    /// Timer which runs and checks running apps.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void MonitorTimerOnElapsed(object? sender, ElapsedEventArgs e)
     {
         await Task.Run(CheckIfMonitoringAppStillRunning);
     }
 
+    /// <summary>
+    /// Check if all apps that are being monitored are still up and running
+    /// </summary>
+    /// <returns></returns>
     private Task CheckIfMonitoringAppStillRunning()
     {
         foreach (var app in MonitoringApps)
@@ -75,20 +84,22 @@ public partial class ShellViewModel : ObservableObject, IShell
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Load all apps list that are being monitored
+    /// </summary>
     private void LoadAllMonitoringApps()
     {
         IsLoading = true;
-        MonitoringApps = new ObservableCollection<AppToMonitor>();
 
-        foreach (var app in _dbService.GetAll())
-        {
-            MonitoringApps.Add(app);
-        }
+        MonitoringApps = new ObservableCollection<AppToMonitor>(_dbService.GetAll());
 
         IsLoading = false;
         SnackbarMessageQueue.Enqueue("Apps monitoring list loading completed!");
     }
 
+    /// <summary>
+    /// Load all running apps on windows
+    /// </summary>
     [RelayCommand]
     private void LoadAllRunningApps()
     {
@@ -106,6 +117,10 @@ public partial class ShellViewModel : ObservableObject, IShell
         SnackbarMessageQueue.Enqueue("System apps loading completed!");
     }
 
+    /// <summary>
+    /// Add an app to monitoring list
+    /// </summary>
+    /// <param name="app"></param>
     [RelayCommand]
     public void MonitorApp(AppToMonitor? app)
     {
@@ -134,6 +149,10 @@ public partial class ShellViewModel : ObservableObject, IShell
         }
     }
 
+    /// <summary>
+    /// Remove and app from monitoring list
+    /// </summary>
+    /// <param name="app"></param>
     [RelayCommand]
     public void StopMonitoringApp(AppToMonitor? app)
     {
@@ -151,6 +170,10 @@ public partial class ShellViewModel : ObservableObject, IShell
         }
     }
 
+    /// <summary>
+    /// Apply filtering on running apps.
+    /// Either show only the apps that has a window or show apps for current user only.
+    /// </summary>
     [RelayCommand]
     public void ApplyFilter()
     {
@@ -168,6 +191,9 @@ public partial class ShellViewModel : ObservableObject, IShell
         AllRunningAppsShown = new ObservableCollection<AppToMonitor>(query);
     }
 
+    /// <summary>
+    /// Opens dialog box that shows monitoring settings for the app.
+    /// </summary>
     [RelayCommand]
     public void OpenAppSettings()
     {
