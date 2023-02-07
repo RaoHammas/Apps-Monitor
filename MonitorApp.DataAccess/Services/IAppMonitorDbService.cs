@@ -26,6 +26,20 @@ public interface IAppMonitorDbService
     AppToMonitor Get(int id);
 
     /// <summary>
+    /// Gets an App settings by it's ID
+    /// </summary>
+    /// <param name="appId">AppToMonitor Id</param>
+    /// <returns>Monitoring settings for the app</returns>
+    AppMonitorSettings GetSettings(int appId);
+
+    /// <summary>
+    /// Saves an app monitoring settings
+    /// </summary>
+    /// <param name="appSettings"> AppMonitorSettings object</param>
+    /// <returns>saved settings id</returns>
+    int SaveSettings(AppMonitorSettings appSettings);
+
+    /// <summary>
     /// Gets all apps being monitored
     /// </summary>
     /// <returns>IEnumerable of AppToMonitor</returns>

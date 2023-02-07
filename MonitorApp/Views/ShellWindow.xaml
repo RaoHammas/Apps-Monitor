@@ -5,13 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:models="clr-namespace:MonitorApp.Domain.Models;assembly=MonitorApp.Domain"
-    xmlns:viewModels1="clr-namespace:MonitorApp.ViewModels"
+    xmlns:viewModels="clr-namespace:MonitorApp.ViewModels"
     xmlns:views="clr-namespace:MonitorApp.Views"
     Title="Applications Monitor"
     Width="1280"
     Height="720"
-    d:DataContext="{d:DesignInstance viewModels1:ShellViewModel,
+    d:DataContext="{d:DesignInstance viewModels:ShellViewModel,
                                      IsDesignTimeCreatable=True}"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{md:MaterialDesignFont}"
@@ -21,7 +20,9 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.Resources />
+    <Window.Resources>
+        <md:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <md:DialogHost
             VerticalAlignment="Stretch"
@@ -31,7 +32,8 @@
             OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
             Placement="Center">
             <md:DialogHost.DialogContent>
-                <views:AppSettingsView />
+                <views:AppSettingsView
+                    DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AppSettingsViewModel}" />
             </md:DialogHost.DialogContent>
             <Grid Margin="30">
                 <Grid>
@@ -75,6 +77,7 @@
                             Command="{Binding MonitorAppCommand}"
                             CommandParameter="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem}"
                             FontWeight="Bold"
+                            Visibility="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem, Converter={StaticResource NullableToVisibilityConverter}}"
                             ToolTip="Add selected app to monitoring list">
                             <md:PackIcon Kind="Add" />
                         </Button>
@@ -201,12 +204,16 @@
 
                                             <Border.Style>
                                                 <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="{DynamicResource BrushSolidSuccessBackground}" />
-                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidSuccessForeground}" />
+                                                    <Setter Property="Background"
+                                                            Value="{DynamicResource BrushSolidSuccessBackground}" />
+                                                    <Setter Property="TextBlock.Foreground"
+                                                            Value="{DynamicResource BrushSolidSuccessForeground}" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Status}" Value="Stopped">
-                                                            <Setter Property="Background" Value="{DynamicResource BrushSolidDangerBackground}" />
-                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidDangerForeground}" />
+                                                            <Setter Property="Background"
+                                                                    Value="{DynamicResource BrushSolidDangerBackground}" />
+                                                            <Setter Property="TextBlock.Foreground"
+                                                                    Value="{DynamicResource BrushSolidDangerForeground}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>

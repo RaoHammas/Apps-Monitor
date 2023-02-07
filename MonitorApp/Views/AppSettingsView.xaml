@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MonitorApp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:viewModels="clr-namespace:MonitorApp.ViewModels"
+    d:DataContext="{d:DesignInstance viewModels:AppSettingsViewModel,
+                                     IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
     <Grid>
         <Grid Margin="50,30,50,30">
@@ -51,9 +52,8 @@
                 Width="50"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Stretch"
-                Command="{Binding ApplyFilterCommand}"
                 Cursor="Hand"
-                IsChecked="{Binding ShowForCurrentUserOnly}"
+                IsChecked="{Binding Settings.MonitorProcessName}"
                 Style="{StaticResource MaterialDesignSwitchToggleButton}"
                 ToolTip="Show only the apps owned by the current user" />
 
@@ -69,9 +69,8 @@
                 Width="50"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Stretch"
-                Command="{Binding ApplyFilterCommand}"
                 Cursor="Hand"
-                IsChecked="{Binding ShowForCurrentUserOnly}"
+                IsChecked="{Binding Settings.MonitorWindowName}"
                 Style="{StaticResource MaterialDesignSwitchToggleButton}"
                 ToolTip="Show only the apps owned by the current user" />
 
@@ -88,9 +87,8 @@
                 Width="50"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Stretch"
-                Command="{Binding ApplyFilterCommand}"
                 Cursor="Hand"
-                IsChecked="{Binding ShowForCurrentUserOnly}"
+                IsChecked="{Binding Settings.MonitorPID}"
                 Style="{StaticResource MaterialDesignSwitchToggleButton}"
                 ToolTip="Show only the apps owned by the current user" />
 
@@ -110,9 +108,8 @@
                 Width="50"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Stretch"
-                Command="{Binding ApplyFilterCommand}"
                 Cursor="Hand"
-                IsChecked="{Binding ShowForCurrentUserOnly}"
+                IsChecked="{Binding Settings.TryRestarting}"
                 Style="{StaticResource MaterialDesignSwitchToggleButton}"
                 ToolTip="Show only the apps owned by the current user" />
 
@@ -129,6 +126,7 @@
                 Width="70"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                SelectedItem="{Binding Settings.RestartingAttempts}"
                 ToolTip="Show only the apps owned by the current user">
                 <ComboBoxItem>1</ComboBoxItem>
                 <ComboBoxItem>2</ComboBoxItem>
@@ -153,51 +151,26 @@
                 Width="50"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Stretch"
-                Command="{Binding ApplyFilterCommand}"
                 Cursor="Hand"
-                IsChecked="{Binding ShowForCurrentUserOnly}"
+                IsChecked="{Binding Settings.SendAlertEmail}"
                 Style="{StaticResource MaterialDesignSwitchToggleButton}"
                 ToolTip="Show only the apps owned by the current user" />
 
 
-
             <TextBlock
                 Grid.Row="3"
-                Grid.Column="6"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Text="After no of attempts" />
-
-            <ComboBox
-                Grid.Row="3"
-                Grid.Column="7"
-                Width="70"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                ToolTip="Show only the apps owned by the current user">
-                <ComboBoxItem>1</ComboBoxItem>
-                <ComboBoxItem>2</ComboBoxItem>
-                <ComboBoxItem>3</ComboBoxItem>
-                <ComboBoxItem>4</ComboBoxItem>
-                <ComboBoxItem>5</ComboBoxItem>
-                <ComboBoxItem>10</ComboBoxItem>
-                <ComboBoxItem>15</ComboBoxItem>
-                <ComboBoxItem>20</ComboBoxItem>
-            </ComboBox>
-
-            <TextBlock
-                Grid.Row="4"
                 Grid.Column="6"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Text="Email address" />
 
             <TextBox
-                Grid.Row="4"
+                Grid.Row="3"
                 Grid.Column="7"
                 Width="250"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                Text="{Binding Settings.EmailAddress}"
                 ToolTip="Show only the apps owned by the current user" />
 
 

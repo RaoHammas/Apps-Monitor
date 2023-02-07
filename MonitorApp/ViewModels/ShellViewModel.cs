@@ -26,12 +26,17 @@ public partial class ShellViewModel : ObservableObject, IShell
     [ObservableProperty] private bool _showAppsOnly;
     [ObservableProperty] private bool _showForCurrentUserOnly;
     [ObservableProperty] private bool _isSettingsDialogOpened;
+    [ObservableProperty] private IAppSettingsViewModel _appSettingsViewModel;
+
+    public ShellViewModel()
+    {
+    }
 
     /// <summary>
     /// Constructor
     /// </summary>
     public ShellViewModel(IProcessHelper processHelper, IAppMonitorDbService dbService,
-        ISnackbarMessageQueue snackbarMessageQueue)
+        ISnackbarMessageQueue snackbarMessageQueue, IAppSettingsViewModel appSettingsViewModel)
     {
         _processHelper = processHelper;
         _dbService = dbService;
@@ -46,6 +51,7 @@ public partial class ShellViewModel : ObservableObject, IShell
 
         var monitorTimer = new Timer(5000);
         monitorTimer.Elapsed += MonitorTimerOnElapsed;
+        _appSettingsViewModel = appSettingsViewModel;
         //monitorTimer.Start();
     }
 
@@ -62,7 +68,7 @@ public partial class ShellViewModel : ObservableObject, IShell
     /// <summary>
     /// Check if all apps that are being monitored are still up and running
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Task</returns>
     private Task CheckIfMonitoringAppStillRunning()
     {
         foreach (var app in MonitoringApps)
@@ -195,8 +201,17 @@ public partial class ShellViewModel : ObservableObject, IShell
     /// Opens dialog box that shows monitoring settings for the app.
     /// </summary>
     [RelayCommand]
-    public void OpenAppSettings()
+    public void OpenAppSettings(AppToMonitor app)
     {
-        IsSettingsDialogOpened = true;
+        AppSettingsViewModel!.Settings = null;
+        AppSettingsViewModel!.Settings = _dbService.GetSettings(app.Id);
+        if (AppSettingsViewModel.Settings != null)
+        {
+            IsSettingsDialogOpened = true;
+        }
+        else
+        {
+            SnackbarMessageQueue.Enqueue("FAILED: Unable to fetch settings! Try again...");
+        }
     }
 }

@@ -68,6 +68,7 @@ namespace MonitorApp
             services.AddTransient<IConnectionHelper, ConnectionHelper>();
             services.AddTransient<IAppMonitorDbService, AppMonitorDbService>();
             services.AddTransient<ISnackbarMessageQueue, SnackbarMessageQueue>();
+            services.AddTransient<IAppSettingsViewModel, AppSettingsViewModel>();
 
 
             return services.BuildServiceProvider();
