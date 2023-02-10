@@ -189,7 +189,7 @@
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
                 <Button Command="{Binding SaveSettingsCommand}">Save</Button>
-                <Button Margin="10,0,0,0">Save for all apps</Button>
+                <Button Margin="10,0,0,0" Command="{Binding SaveForAllSettingsCommand}">Save for all apps</Button>
             </StackPanel>
 
         </Grid>

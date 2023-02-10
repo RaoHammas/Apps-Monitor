@@ -40,6 +40,13 @@ public interface IAppMonitorDbService
     int SaveSettings(AppMonitorSettings appSettings);
 
     /// <summary>
+    /// Saves settings for all apps
+    /// </summary>
+    /// <param name="appSettings"> AppMonitorSettings object</param>
+    /// <returns>Saved or not</returns>
+    bool SaveSettingsForAllApps(AppMonitorSettings appSettings);
+
+    /// <summary>
     /// Gets all apps being monitored
     /// </summary>
     /// <returns>IEnumerable of AppToMonitor</returns>

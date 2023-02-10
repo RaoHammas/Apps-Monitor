@@ -23,6 +23,7 @@ public partial class ShellViewModel : ObservableObject, IShell
     [ObservableProperty] private ObservableCollection<AppToMonitor> _allRunningAppsShown = new();
     [ObservableProperty] private ObservableCollection<AppToMonitor> _monitoringApps = new();
     [ObservableProperty] private bool _isLoading;
+    [ObservableProperty] private bool _isMonitoringOn;
     [ObservableProperty] private bool _showAppsOnly;
     [ObservableProperty] private bool _showForCurrentUserOnly;
     [ObservableProperty] private bool _isSettingsDialogOpened;
@@ -93,10 +94,12 @@ public partial class ShellViewModel : ObservableObject, IShell
     /// <summary>
     /// Load all apps list that are being monitored
     /// </summary>
-    private void LoadAllMonitoringApps()
+    [RelayCommand]
+    public void LoadAllMonitoringApps()
     {
         IsLoading = true;
 
+        MonitoringApps.Clear();
         MonitoringApps = new ObservableCollection<AppToMonitor>(_dbService.GetAll());
 
         IsLoading = false;
@@ -107,7 +110,7 @@ public partial class ShellViewModel : ObservableObject, IShell
     /// Load all running apps on windows
     /// </summary>
     [RelayCommand]
-    private void LoadAllRunningApps()
+    public void LoadAllRunningApps()
     {
         IsLoading = true;
         AllRunningApps = new ObservableCollection<AppToMonitor>();
@@ -203,7 +206,6 @@ public partial class ShellViewModel : ObservableObject, IShell
     [RelayCommand]
     public void OpenAppSettings(AppToMonitor app)
     {
-        AppSettingsViewModel!.Settings = new AppMonitorSettings();
         AppSettingsViewModel!.Settings = _dbService.GetSettings(app.Id);
         if (AppSettingsViewModel.Settings != null)
         {

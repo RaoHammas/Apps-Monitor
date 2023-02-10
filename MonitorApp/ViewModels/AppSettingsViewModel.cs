@@ -10,12 +10,11 @@ namespace MonitorApp.ViewModels;
 public partial class AppSettingsViewModel : ObservableObject, IAppSettingsViewModel
 {
     private readonly IAppMonitorDbService _dbService;
-    [ObservableProperty] private AppMonitorSettings _settings;
+    [ObservableProperty] private AppMonitorSettings _settings = new();
     [ObservableProperty] private ISnackbarMessageQueue _snackbarMessageQueue;
 
     public AppSettingsViewModel(IAppMonitorDbService dbService, ISnackbarMessageQueue snackbarMessageQueue)
     {
-        _settings = new AppMonitorSettings();
         _dbService = dbService;
         _snackbarMessageQueue = snackbarMessageQueue;
     }
@@ -25,6 +24,15 @@ public partial class AppSettingsViewModel : ObservableObject, IAppSettingsViewMo
     {
         Settings.UpdatedDateTime = DateTime.Now;
         SnackbarMessageQueue.Enqueue(_dbService.SaveSettings(Settings) > 0
+            ? "Settings Saved successfully!"
+            : "Settings Failed to save. Try again...");
+    }
+
+    [RelayCommand]
+    public void SaveForAllSettings()
+    {
+        Settings.UpdatedDateTime = DateTime.Now;
+        SnackbarMessageQueue.Enqueue(_dbService.SaveSettingsForAllApps(Settings)
             ? "Settings Saved successfully!"
             : "Settings Failed to save. Try again...");
     }

@@ -8,8 +8,8 @@
     xmlns:viewModels="clr-namespace:MonitorApp.ViewModels"
     xmlns:views="clr-namespace:MonitorApp.Views"
     Title="Applications Monitor"
-    Width="1280"
-    Height="720"
+    MinWidth="1280"
+    MinHeight="720"
     d:DataContext="{d:DesignInstance viewModels:ShellViewModel,
                                      IsDesignTimeCreatable=True}"
     Background="{DynamicResource MaterialDesignPaper}"
@@ -32,8 +32,7 @@
             OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
             Placement="Center">
             <md:DialogHost.DialogContent>
-                <views:AppSettingsView
-                    DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AppSettingsViewModel}" />
+                <views:AppSettingsView DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=DataContext.AppSettingsViewModel}" />
             </md:DialogHost.DialogContent>
             <Grid Margin="30">
                 <Grid>
@@ -77,8 +76,8 @@
                             Command="{Binding MonitorAppCommand}"
                             CommandParameter="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem}"
                             FontWeight="Bold"
-                            Visibility="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem, Converter={StaticResource NullableToVisibilityConverter}}"
-                            ToolTip="Add selected app to monitoring list">
+                            ToolTip="Add Selected App To Monitoring List"
+                            Visibility="{Binding ElementName=ComboBoxAllApps, Path=SelectedItem, Converter={StaticResource NullableToVisibilityConverter}}">
                             <md:PackIcon Kind="Add" />
                         </Button>
 
@@ -90,7 +89,7 @@
                             md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
                             Command="{Binding LoadAllRunningAppsCommand}"
                             FontWeight="Bold"
-                            ToolTip="Refresh running applications list">
+                            ToolTip="Refresh Running Applications List">
                             <md:PackIcon Kind="Refresh" />
                         </Button>
                     </StackPanel>
@@ -103,7 +102,7 @@
                         <TextBlock
                             Margin="0,0,5,0"
                             VerticalAlignment="Center"
-                            Text="Show Apps With Windows Only" />
+                            Text="Apps With Windows Only" />
                         <ToggleButton
                             Width="50"
                             HorizontalAlignment="Stretch"
@@ -150,6 +149,51 @@
                                 </TextBlock>
                             </md:Chip.Content>
                         </md:Chip>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Row="2"
+                        Margin="0,10,0,10"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="10,5,10,5"
+                            VerticalAlignment="Stretch"
+                            Command="{Binding LoadAllMonitoringAppsCommand}"
+                            FontWeight="Bold"
+                            ToolTip="Refresh Monitoring applications list">
+                            <md:PackIcon Kind="Refresh" />
+                        </Button>
+                        <Button
+                            Margin="10,0,0,0"
+                            Padding="10,5,10,5"
+                            VerticalAlignment="Stretch"
+                            md:ButtonProgressAssist.IsIndeterminate="True"
+                            md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
+                            Command="{Binding LoadAllRunningAppsCommand}"
+                            FontWeight="Bold">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <md:PackIcon Kind="Pause" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="ToolTip" Value="Stop Monitoring Apps" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMonitoringOn}" Value="True">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <md:PackIcon Kind="Play" />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip" Value="Start Monitoring Apps" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
 
                     <DataGrid
@@ -204,16 +248,12 @@
 
                                             <Border.Style>
                                                 <Style TargetType="Border">
-                                                    <Setter Property="Background"
-                                                            Value="{DynamicResource BrushSolidSuccessBackground}" />
-                                                    <Setter Property="TextBlock.Foreground"
-                                                            Value="{DynamicResource BrushSolidSuccessForeground}" />
+                                                    <Setter Property="Background" Value="{DynamicResource BrushSolidSuccessBackground}" />
+                                                    <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidSuccessForeground}" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Status}" Value="Stopped">
-                                                            <Setter Property="Background"
-                                                                    Value="{DynamicResource BrushSolidDangerBackground}" />
-                                                            <Setter Property="TextBlock.Foreground"
-                                                                    Value="{DynamicResource BrushSolidDangerForeground}" />
+                                                            <Setter Property="Background" Value="{DynamicResource BrushSolidDangerBackground}" />
+                                                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource BrushSolidDangerForeground}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>

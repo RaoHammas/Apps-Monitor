@@ -118,6 +118,7 @@ public class AppMonitorDbService : IAppMonitorDbService
         });
     }
 
+
     ///<inheritdoc />
     public IEnumerable<AppToMonitor> GetAll()
     {
@@ -155,5 +156,22 @@ public class AppMonitorDbService : IAppMonitorDbService
         var insertedId = con.QuerySingle<int>(query, settings);
 
         return insertedId;
+    }
+
+
+    ///<inheritdoc />
+    public bool SaveSettingsForAllApps(AppMonitorSettings appSettings)
+    {
+        using IDbConnection con = new SqliteConnection(_connectionString);
+
+        const string query =
+            @"UPDATE AppMonitorSettings SET 
+            MonitorProcessName = @MonitorProcessName, MonitorWindowName = @MonitorWindowName, MonitorPID = @MonitorPID, TryRestarting = @TryRestarting, 
+            RestartingAttempts = @RestartingAttempts, SendAlertEmail = @SendAlertEmail, EmailAddress = @EmailAddress, UpdatedDateTime = @UpdatedDateTime; 
+            ";
+
+        var rowsEffected = con.Execute(query, appSettings);
+
+        return rowsEffected > 0;
     }
 }
