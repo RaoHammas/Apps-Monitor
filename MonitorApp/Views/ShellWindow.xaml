@@ -169,20 +169,12 @@
                             Margin="10,0,0,0"
                             Padding="10,5,10,5"
                             VerticalAlignment="Stretch"
-                            md:ButtonProgressAssist.IsIndeterminate="True"
-                            md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
-                            Command="{Binding LoadAllRunningAppsCommand}"
+                            Command="{Binding ToggleMonitoringOnOffCommand}"
                             FontWeight="Bold">
                             <Button.Style>
                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                                    <Setter Property="Content">
-                                        <Setter.Value>
-                                            <md:PackIcon Kind="Pause" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="ToolTip" Value="Stop Monitoring Apps" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsMonitoringOn}" Value="True">
+                                        <DataTrigger Binding="{Binding IsMonitoringOn}" Value="False">
                                             <Setter Property="Content">
                                                 <Setter.Value>
                                                     <md:PackIcon Kind="Play" />
@@ -190,10 +182,20 @@
                                             </Setter>
                                             <Setter Property="ToolTip" Value="Start Monitoring Apps" />
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMonitoringOn}" Value="True">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <md:PackIcon Kind="Pause" />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip" Value="Stop Monitoring Apps" />
+                                        </DataTrigger>
                                     </Style.Triggers>
+
                                 </Style>
                             </Button.Style>
                         </Button>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding IsMonitoringOn}" />
                     </StackPanel>
 
                     <DataGrid

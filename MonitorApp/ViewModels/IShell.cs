@@ -1,6 +1,7 @@
-﻿namespace MonitorApp.ViewModels;
+﻿using System;
 
-public interface IShell
+namespace MonitorApp.ViewModels;
+
+public interface IShell : IDisposable
 {
-    
 }

@@ -13,11 +13,13 @@ using MonitorApp.Helpers;
 
 namespace MonitorApp.ViewModels;
 
-public partial class ShellViewModel : ObservableObject, IShell
+public partial class ShellViewModel : ObservableObject, IShell, IDisposable
 {
     private readonly int _currentSessionId;
     private readonly IProcessHelper _processHelper;
     private readonly IAppMonitorDbService _dbService;
+    private readonly Timer _monitorTimer;
+
     [ObservableProperty] private ISnackbarMessageQueue _snackbarMessageQueue;
     [ObservableProperty] private ObservableCollection<AppToMonitor> _allRunningApps = new();
     [ObservableProperty] private ObservableCollection<AppToMonitor> _allRunningAppsShown = new();
@@ -42,18 +44,19 @@ public partial class ShellViewModel : ObservableObject, IShell
         _processHelper = processHelper;
         _dbService = dbService;
         _snackbarMessageQueue = snackbarMessageQueue;
+        _appSettingsViewModel = appSettingsViewModel;
         _currentSessionId = processHelper.GetCurrentProcessSessionId();
+
         IsLoading = false;
         ShowAppsOnly = false;
         IsSettingsDialogOpened = false;
+        IsMonitoringOn = true;
+
+        _monitorTimer = new Timer(5000);
+        _monitorTimer.Elapsed += MonitorTimerOnElapsed;
 
         LoadAllRunningApps();
         LoadAllMonitoringApps();
-
-        var monitorTimer = new Timer(5000);
-        monitorTimer.Elapsed += MonitorTimerOnElapsed;
-        _appSettingsViewModel = appSettingsViewModel;
-        //monitorTimer.Start();
     }
 
     /// <summary>
@@ -215,5 +218,30 @@ public partial class ShellViewModel : ObservableObject, IShell
         {
             SnackbarMessageQueue.Enqueue("FAILED: Unable to fetch settings! Try again...");
         }
+    }
+
+    /// <summary>
+    /// Turn monitoring on Or off
+    /// </summary>
+    [RelayCommand]
+    public void ToggleMonitoringOnOff()
+    {
+        if (IsMonitoringOn)
+        {
+            IsMonitoringOn = false;
+            _monitorTimer.Stop();
+            SnackbarMessageQueue.Enqueue("Stopped Monitoring!");
+        }
+        else
+        {
+            IsMonitoringOn = true;
+            _monitorTimer.Start();
+            SnackbarMessageQueue.Enqueue("Started Monitoring!");
+        }
+    }
+
+    public void Dispose()
+    {
+        _monitorTimer.Dispose();
     }
 }

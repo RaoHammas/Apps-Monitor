@@ -27,6 +27,11 @@ namespace MonitorApp
         /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Shell View Model
+        /// </summary>
+        private IShell? _shellViewModel;
+
         #endregion
 
         /// <summary>
@@ -44,16 +49,21 @@ namespace MonitorApp
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            _shellViewModel = Services.GetService<IShell>();
             ShellWindow shellView = new()
             {
-                DataContext = Services.GetService<IShell>()
+                DataContext = _shellViewModel,
             };
 
             shellView.Show();
             //Services.GetService<IThemeHelper>()?.Set(ThemeType.Dark, BackgroundType.Mica, false);
         }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _shellViewModel?.Dispose();
+            base.OnExit(e);
+        }
 
         /// <summary>
         /// Configures the services for the application.
