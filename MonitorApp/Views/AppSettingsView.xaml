@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MonitorApp.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:MonitorApp.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:AppSettingsViewModel,
                                      IsDesignTimeCreatable=True}"
@@ -128,14 +130,19 @@
                 VerticalAlignment="Center"
                 SelectedItem="{Binding Settings.RestartingAttempts}"
                 ToolTip="Show only the apps owned by the current user">
-                <ComboBoxItem>1</ComboBoxItem>
-                <ComboBoxItem>2</ComboBoxItem>
-                <ComboBoxItem>3</ComboBoxItem>
-                <ComboBoxItem>4</ComboBoxItem>
-                <ComboBoxItem>5</ComboBoxItem>
-                <ComboBoxItem>10</ComboBoxItem>
-                <ComboBoxItem>15</ComboBoxItem>
-                <ComboBoxItem>20</ComboBoxItem>
+                <ComboBox.ItemsSource>
+                    <x:Array Type="system:Int32">
+                        <system:Int32>0</system:Int32>
+                        <system:Int32>1</system:Int32>
+                        <system:Int32>2</system:Int32>
+                        <system:Int32>3</system:Int32>
+                        <system:Int32>4</system:Int32>
+                        <system:Int32>5</system:Int32>
+                        <system:Int32>10</system:Int32>
+                        <system:Int32>15</system:Int32>
+                        <system:Int32>20</system:Int32>
+                    </x:Array>
+                </ComboBox.ItemsSource>
             </ComboBox>
 
             <TextBlock
@@ -181,11 +188,17 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
-                <Button>Save</Button>
+                <Button Command="{Binding SaveSettingsCommand}">Save</Button>
                 <Button Margin="10,0,0,0">Save for all apps</Button>
-                <Button Margin="10,0,0,0">Cancel</Button>
             </StackPanel>
 
         </Grid>
+        <materialDesign:Snackbar
+            Margin="12"
+            HorizontalAlignment="Left"
+            ActionButtonPlacement="Auto"
+            MessageQueue="{Binding SnackbarMessageQueue, Mode=OneWay}">
+            <materialDesign:SnackbarMessage ActionContent="X" Content="{Binding}" />
+        </materialDesign:Snackbar>
     </Grid>
 </UserControl>

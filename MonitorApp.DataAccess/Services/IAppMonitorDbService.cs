@@ -14,16 +14,16 @@ public interface IAppMonitorDbService
     /// <summary>
     /// Removes an app from monitoring table
     /// </summary>
-    /// <param name="id">Id of AppToMonitor object</param>
+    /// <param name="appId">Id of AppToMonitor object</param>
     /// <returns>True if successfully deleted else false</returns>
-    bool Remove(int id);
+    bool Remove(int appId);
 
     /// <summary>
     /// Gets an app by ID
     /// </summary>
-    /// <param name="id">AppToMonitor Id</param>
+    /// <param name="appId">AppToMonitor Id</param>
     /// <returns>AppToMonitor or null if not found</returns>
-    AppToMonitor Get(int id);
+    AppToMonitor Get(int appId);
 
     /// <summary>
     /// Gets an App settings by it's ID

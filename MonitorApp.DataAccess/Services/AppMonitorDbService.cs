@@ -25,6 +25,7 @@ public class AppMonitorDbService : IAppMonitorDbService
     public int Save(AppToMonitor app)
     {
         using IDbConnection con = new SqliteConnection(_connectionString);
+        con.Open();
         using var transaction = con.BeginTransaction();
         try
         {
@@ -73,23 +74,21 @@ public class AppMonitorDbService : IAppMonitorDbService
             transaction.Rollback();
             throw;
         }
-
-
-        return 0;
     }
 
     ///<inheritdoc />
-    public bool Remove(int id)
+    public bool Remove(int appId)
     {
         using IDbConnection con = new SqliteConnection(_connectionString);
+        con.Open();
         using var transaction = con.BeginTransaction();
         try
         {
             var query = @"DELETE FROM AppsToMonitor WHERE Id = @Id;";
-            var rowsAffected = con.Execute(query, new { Id = id }, transaction);
+            var rowsAffected = con.Execute(query, new { Id = appId }, transaction);
 
             var querySettings = @"DELETE FROM AppMonitorSettings WHERE AppId = @AppId;";
-            var rowsAffectedSettings = con.Execute(querySettings, new { AppId = id }, transaction);
+            var rowsAffectedSettings = con.Execute(querySettings, new { AppId = appId }, transaction);
 
             transaction.Commit();
             if (rowsAffected < 1 || rowsAffectedSettings < 1)
@@ -108,14 +107,14 @@ public class AppMonitorDbService : IAppMonitorDbService
     }
 
     ///<inheritdoc />
-    public AppToMonitor Get(int id)
+    public AppToMonitor Get(int appId)
     {
         using IDbConnection con = new SqliteConnection(_connectionString);
         var query = "SELECT * FROM AppsToMonitor WHERE Id = @Id;";
 
         return con.QueryFirstOrDefault<AppToMonitor>(query, new
         {
-            Id = id
+            Id = appId
         });
     }
 

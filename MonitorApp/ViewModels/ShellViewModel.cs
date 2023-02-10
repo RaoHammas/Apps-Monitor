@@ -203,7 +203,7 @@ public partial class ShellViewModel : ObservableObject, IShell
     [RelayCommand]
     public void OpenAppSettings(AppToMonitor app)
     {
-        AppSettingsViewModel!.Settings = null;
+        AppSettingsViewModel!.Settings = new AppMonitorSettings();
         AppSettingsViewModel!.Settings = _dbService.GetSettings(app.Id);
         if (AppSettingsViewModel.Settings != null)
         {
